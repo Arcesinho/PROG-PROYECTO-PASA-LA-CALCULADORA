@@ -105,28 +105,40 @@ public class PasaLaCalculadora {
 
     //Función para comprobar si el numero está en rango y pertenece a la misma fila (calculadora)
 
-    public static int checkNumber(int ultimoNumero){
+    public static int checkNumber(int number, int ultimoNumero){
 
-
-        int number = getFirstNumber();
 
         int i;
 
-        if (number<1 && number>9 || !getCords(number, ultimoNumero)){
-            if (number<1 && number>9){
-                System.out.println("El numero está fuera de rango. ¡Pierdes el turno!");
-                i = 0;
-                return i;
+        if (ultimoNumero != 0 && !(number ==ultimoNumero)){
+
+            if (number<1 && number>9 || !getCords(number, ultimoNumero)){
+                if (number<1 && number>9){
+                    System.out.println("El numero está fuera de rango. ¡Pierdes el turno!");
+                    i = 0;
+                    return i;
+                }
+                if (!getCords(number, ultimoNumero)){
+                    System.out.println("El numero no está en la misma fila o columna. ¡Pierdes el turno!");
+                    i = 1;
+                    return i;
+                }
             }
-            if (!getCords(number, ultimoNumero)){
-                System.out.println("El numero no está en la misma fila o columna. ¡Pierdes el turno!");
-                i = 1;
-                return i;
-            }
-        }ultimoNumero = number;
+        }
+        ultimoNumero = number;
         return ultimoNumero;
     }
 
+    public static boolean checkIfEquals(int number, int ultimoNumero){
+
+        if (number == ultimoNumero){
+            System.out.println("No se puede repetir el mismo numero, introducelo de nuevo:");
+            return true;
+        }else {
+            return false;
+        }
+
+    }
 
 
     public static void main(String[] args) {
@@ -148,19 +160,47 @@ public class PasaLaCalculadora {
             int maxNumber = getMaxNumber();
             int firstNumber = getFirstNumber();
 
-           int total = 0;
 
-            while (total != maxNumber){
+           int total = firstNumber;
 
-                int turno = 1;
-                System.out.println("Turno: "+turno);
-                System.out.println("Objetivo del juego: "+maxNumber);
-                System.out.println("Ultimo numero introducido: "+lastNumber);
-                System.out.println("Turno: "+name1);
-                System.out.println("Total: "+total);
+           int turno = 1;
 
-                int getNumbers = checkNumber(firstNumber);
-                total = getNumbers + lastNumber;
+            //Falla el while, no podemos asignar number a last number
+
+            while (total<= maxNumber){
+
+                int checkFirstNumber = checkNumber(firstNumber,lastNumber);
+                while (checkIfEquals(firstNumber, lastNumber)){
+                    int number = getFirstNumber();
+                    number = lastNumber;
+                }
+
+
+                if (turno%2 == 0){
+
+                    System.out.println("Turno: "+turno);
+                    System.out.println("Objetivo del juego: "+maxNumber);
+                    System.out.println("Ultimo numero introducido: "+lastNumber);
+                    System.out.println("Turno del jugador: "+name2);
+                    System.out.println("Total: "+total);
+
+                }else{
+
+                    System.out.println("Turno: "+turno);
+                    System.out.println("Objetivo del juego: "+maxNumber);
+                    System.out.println("Ultimo numero introducido: "+lastNumber);
+                    System.out.println("Turno del jugador: "+name1);
+                    System.out.println("Total: "+total);
+
+                }
+
+                int number = getFirstNumber();
+                firstNumber = number;
+                lastNumber = checkFirstNumber;
+                turno = turno + 1;
+                total = total + lastNumber ;
+
+
 
             }
 
