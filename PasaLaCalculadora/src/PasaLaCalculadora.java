@@ -10,8 +10,12 @@ public class PasaLaCalculadora {
         System.out.println("Bienvenido al juego, que quieres hacer?\n1: Empezar a jugar\n2: Terminar juego");
         Scanner sc = new Scanner(System.in);
         int opcion = sc.nextInt();
+        while (opcion != 1 && opcion != 2){
+            System.out.println("Introduce una opción correcta: ");
+            Scanner sc1 = new Scanner(System.in);
+            opcion = sc1.nextInt();
+        }return opcion;
 
-        return opcion;
     }
 
     //Función para preguntar por el nombre
@@ -34,7 +38,7 @@ public class PasaLaCalculadora {
         return name;
     }
 
-    //Funcion que pide el numero maximo y comprueba si es -1 o no esta en rango
+    //Funcion que piide el numero maximo y comprueba si es -1 o no esta en rango
 
     public static int getMaxNumber() {
         System.out.println("Introduce un numero del 10 al 99 (introduce -1 si quieres un numero aleatorio): ");
@@ -114,30 +118,23 @@ public class PasaLaCalculadora {
 
             if (number<1 && number>9 || !getCords(number, ultimoNumero)){
                 if (number<1 && number>9){
-                    System.out.println("El numero está fuera de rango. ¡Pierdes el turno!");
-                    i = 0;
+                    i = 1;
                     return i;
                 }
                 if (!getCords(number, ultimoNumero)){
-                    System.out.println("El numero no está en la misma fila o columna. ¡Pierdes el turno!");
-                    i = 1;
+                    i = 2;
                     return i;
                 }
             }
         }
-        ultimoNumero = number;
-        return ultimoNumero;
-    }
-
-    public static boolean checkIfEquals(int number, int ultimoNumero){
-
-        if (number == ultimoNumero){
-            System.out.println("No se puede repetir el mismo numero, introducelo de nuevo:");
-            return true;
-        }else {
-            return false;
+        if (ultimoNumero == number){
+            System.out.println("El numero es igual al introducido en el anterior turno.");
+            i = 3;
+            return i;
         }
 
+        ultimoNumero = number;
+        return ultimoNumero;
     }
 
 
@@ -170,11 +167,14 @@ public class PasaLaCalculadora {
             while (total<= maxNumber){
 
                 int checkFirstNumber = checkNumber(firstNumber,lastNumber);
-                while (checkIfEquals(firstNumber, lastNumber)){
-                    int number = getFirstNumber();
-                    number = lastNumber;
-                }
 
+                if (turno > 1){
+
+                    while (checkFirstNumber == 3){
+                        lastNumber = getFirstNumber();
+                        checkFirstNumber = checkNumber(firstNumber, lastNumber);
+                    }lastNumber = checkFirstNumber;
+                }
 
                 if (turno%2 == 0){
 
@@ -194,11 +194,14 @@ public class PasaLaCalculadora {
 
                 }
 
-                int number = getFirstNumber();
-                firstNumber = number;
+
+                firstNumber = getFirstNumber();
                 lastNumber = checkFirstNumber;
                 turno = turno + 1;
-                total = total + lastNumber ;
+                if (turno > 1){
+                    total = total + lastNumber ;
+                }
+
 
 
 
