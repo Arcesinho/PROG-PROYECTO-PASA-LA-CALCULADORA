@@ -24,18 +24,16 @@ public class PasaLaCalculadora {
 
         System.out.println("Introduce tu nombre, jugador 1: ");
         Scanner sc = new Scanner(System.in);
-        String name = sc.nextLine();
 
-        return name;
+        return sc.nextLine();
     }
 
     public static String getUserName2(){
 
         System.out.println("Introduce tu nombre, jugador 2: ");
         Scanner sc = new Scanner(System.in);
-        String name = sc.nextLine();
 
-        return name;
+        return sc.nextLine();
     }
 
     //Funcion que piide el numero maximo y comprueba si es -1 o no esta en rango
@@ -65,34 +63,41 @@ public class PasaLaCalculadora {
         return maxNumber;
     }
 
+
+    /**
+     *
+     * @param number1
+     * @param number2
+     * @return devuelve true si el numero 2, el ultimo se encuentra en la misma fila y columna que el 1 y false si no
+     */
     public static boolean getCords(int number1, int number2){
 
 
         if (number1 == 1 && (number2 == 2 || number2 == 3 || number2 == 4 || number2 == 7)){
             return true;
         }
-        if (number1 == 2 && (number2 == 1 || number2 == 3 || number2 == 5 || number2 == 8)){
+        else if (number1 == 2 && (number2 == 1 || number2 == 3 || number2 == 5 || number2 == 8)){
             return true;
         }
-        if (number1 == 3 && (number2 == 1 || number2 == 2 || number2 == 6 || number2 == 9)){
+        else if (number1 == 3 && (number2 == 1 || number2 == 2 || number2 == 6 || number2 == 9)){
             return true;
         }
-        if (number1 == 4 && (number2 == 5 || number2 == 6 || number2 == 1 || number2 == 7)){
+        else if (number1 == 4 && (number2 == 5 || number2 == 6 || number2 == 1 || number2 == 7)){
             return true;
         }
-        if (number1 == 5 && (number2 == 4 || number2 == 6 || number2 == 2 || number2 == 8)){
+        else if (number1 == 5 && (number2 == 4 || number2 == 6 || number2 == 2 || number2 == 8)){
             return true;
         }
-        if (number1 == 6 && (number2 == 4 || number2 == 5 || number2 == 3 || number2 == 9)){
+        else if (number1 == 6 && (number2 == 4 || number2 == 5 || number2 == 3 || number2 == 9)){
             return true;
         }
-        if (number1 == 7 && (number2 == 8 || number2 == 9 || number2 == 1 || number2 == 4)){
+        else if (number1 == 7 && (number2 == 8 || number2 == 9 || number2 == 1 || number2 == 4)){
             return true;
         }
-        if (number1 == 8 && (number2 == 7 || number2 == 9 || number2 == 2 || number2 == 5)){
+        else if (number1 == 8 && (number2 == 7 || number2 == 9 || number2 == 2 || number2 == 5)){
             return true;
         }
-        if (number1 == 9 && (number2 == 7 || number2 == 8 || number2 == 3 || number2 == 6)){
+        else if (number1 == 9 && (number2 == 7 || number2 == 8 || number2 == 3 || number2 == 6)){
             return true;
         }
         else{
@@ -101,6 +106,7 @@ public class PasaLaCalculadora {
     }
 
     public static int getFirstNumber(){
+
         System.out.println("Introduce un numero del 1 al 9 (incluidos): ");
         Scanner sc = new Scanner(System.in);
         return sc.nextInt();
@@ -109,38 +115,65 @@ public class PasaLaCalculadora {
 
     //Función para comprobar si el numero está en rango y pertenece a la misma fila (calculadora)
 
-    public static int checkNumber(int number, int ultimoNumero){
-
-
-        int i;
-
-        if (ultimoNumero != 0 && !(number ==ultimoNumero)){
-
-            if (number<1 && number>9 || !getCords(number, ultimoNumero)){
-                if (number<1 && number>9){
-                    i = 1;
-                    return i;
-                }
-                if (!getCords(number, ultimoNumero)){
-                    i = 2;
-                    return i;
-                }
-            }
-        }
-        if (ultimoNumero == number){
-            System.out.println("El numero es igual al introducido en el anterior turno.");
-            i = 3;
-            return i;
-        }
-
-        ultimoNumero = number;
-        return ultimoNumero;
+    public enum ValidationResult {
+        SUCCESS,
+        OUT_OF_RANGE,
+        INVALID_CORDS,
+        SAME_AS_LAST_NUMBER,
     }
 
+    public static ValidationResult checkNumber(int primerNumero, int ultimoNumero){
+
+        if(primerNumero < 1 || primerNumero > 9){
+            return ValidationResult.OUT_OF_RANGE;
+        }
+        if (ultimoNumero == 0) {
+            return ValidationResult.SUCCESS;
+        }
+        if (primerNumero == ultimoNumero) {
+            return ValidationResult.SAME_AS_LAST_NUMBER;
+        }
+        if (!getCords(primerNumero, ultimoNumero)) {
+            return ValidationResult.INVALID_CORDS;
+        }
+        return ValidationResult.SUCCESS;
+
+    }
+
+    public static int getNumber(int ultimoNumero){
+
+        while (true){
+
+            System.out.println("Introduce un numero del 1 al 9 (incluidos): ");
+            Scanner sc = new Scanner(System.in);
+            int numeroIntroducido  = sc.nextInt();
+
+            ValidationResult resultado = checkNumber(numeroIntroducido, ultimoNumero);
+
+            switch (resultado) {
+                case SUCCESS:
+                    return numeroIntroducido;
+
+                case OUT_OF_RANGE:
+                    System.out.println("Error: El número debe estar entre 1 y 9. Inténtalo de nuevo.");
+                    break;
+
+                case SAME_AS_LAST_NUMBER:
+                    System.out.println("Error: No puedes introducir el mismo número que el anterior. Inténtalo de nuevo.");
+                    break;
+
+                case INVALID_CORDS:
+                    System.out.println("Error: El número no está en la misma fila o columna. Inténtalo de nuevo.");
+                    break;
+            }
+
+        }
+    }
 
     public static void main(String[] args) {
 
         int opcion = -2;
+
 
         while (opcion != 2){
 
@@ -162,19 +195,7 @@ public class PasaLaCalculadora {
 
            int turno = 1;
 
-            //Falla el while, no podemos asignar number a last number
-
             while (total<= maxNumber){
-
-                int checkFirstNumber = checkNumber(firstNumber,lastNumber);
-
-                if (turno > 1){
-
-                    while (checkFirstNumber == 3){
-                        lastNumber = getFirstNumber();
-                        checkFirstNumber = checkNumber(firstNumber, lastNumber);
-                    }lastNumber = checkFirstNumber;
-                }
 
                 if (turno%2 == 0){
 
@@ -194,19 +215,22 @@ public class PasaLaCalculadora {
 
                 }
 
+                if (turno == 1){
+                    lastNumber = getNumber(firstNumber);
+                }else {
+                    lastNumber = getNumber(lastNumber);
+                }
 
-                firstNumber = getFirstNumber();
-                lastNumber = checkFirstNumber;
                 turno = turno + 1;
                 if (turno > 1){
                     total = total + lastNumber ;
                 }
-
-
-
-
             }
-
+            if (turno%2 == 0){
+                System.out.println("El jugador " + name1 + " ha ganado la partida\n");
+            }else{
+                System.out.println("El jugador " + name2 + " ha ganado la partida\n");
+            }
 
         }
     }
