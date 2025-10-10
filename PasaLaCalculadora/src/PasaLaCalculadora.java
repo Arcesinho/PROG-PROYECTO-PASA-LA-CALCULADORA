@@ -119,28 +119,31 @@ public class PasaLaCalculadora {
             return false;
         }
     }
-
     /**
      *
-     * @return
+     * @return devuelve el numero que el usuario ha introducido
      */
     public static int getFirstNumber(){
 
-        System.out.println("Introduce un numero del 1 al 9 (incluidos): ");
+        System.out.println("Introduce un numero entero del 1 al 9 (incluidos): ");
         Scanner sc = new Scanner(System.in);
         return sc.nextInt();
     }
-
-
-    //Función para comprobar si el numero está en rango y pertenece a la misma fila (calculadora)
-
+    /**
+     * Enum para los posibles casos al introducir un numero
+     */
     public enum ValidationResult {
         SUCCESS,
         OUT_OF_RANGE,
         INVALID_CORDS,
         SAME_AS_LAST_NUMBER,
     }
-
+    /**
+     *
+     * @param primerNumero el numero que introduce el usuario antes de pasar por esta funcion
+     * @param ultimoNumero el ultimo numero almacenado
+     * @return devuelve los casos del enum despues de checkearlo
+     */
     public static ValidationResult checkNumber(int primerNumero, int ultimoNumero){
 
         if(primerNumero < 1 || primerNumero > 9){
@@ -158,7 +161,13 @@ public class PasaLaCalculadora {
         return ValidationResult.SUCCESS;
 
     }
-
+    /**
+     *
+     * @param ultimoNumero el numero resultante de la ultima ejecucion (inicialmente es el primer numero)
+     * @return devuelve el resultado de checkear a los dos numeros (comprobado en la funcion anterior)
+     * El while true se detiene cuando retornamos algo, por eso lo usamos,
+     * si es suceso por ejemplo nos devuelve el numero ya comprobad
+     */
     public static int getNumber(int ultimoNumero){
 
         while (true){
@@ -187,46 +196,42 @@ public class PasaLaCalculadora {
             }
         }
     }
-
     public static void main(String[] args) {
 
         int opcion = -1;
 
-
         while (opcion != 2) {
 
-            int lastNumber = 0;
-
             opcion = getUserInput();
-
             if (opcion == 2) {
                 System.out.println("Hasta otra!!");
                 break;
             }
+            //Pedimos al usuario los nombres, el numero maximo, y el primer numero
             String name1 = getUserName1();
             String name2 = getUserName2();
             int maxNumber = getMaxNumber();
             System.out.println("El numero maximo es: "+maxNumber);
             int firstNumber = getFirstNumber();
-
-
+            //Iniciamos lastNumber a 0 total le sumamos el primer numero y el turno inicial a 1
+            int lastNumber = 0;
             int total = firstNumber;
-
             int turno = 1;
-
+            //Este bucle solo terminará cuando el total sea mayor al numero maximo
             while (total <= maxNumber) {
-
-
+                //Aqui mostraremos toda la información necesaria por pantalla
                 System.out.println("Turno: " + turno);
                 System.out.println("Objetivo del juego: " + maxNumber);
                 System.out.println("Ultimo numero introducido: " + lastNumber);
+                //Para saber de quien es el turno utilizamos el modulo, par jugador 2 impar jugador 1
                 if (turno % 2 == 0) {
                     System.out.println("Turno del jugador: " + name2);
                 }else {
                     System.out.println("Turno del jugador: " + name1);
                 }
                 System.out.println("Total: " + total);
-
+                //Para el primer turno el numero que comprobamos es el almacenado en firstNumber
+                //luego se usa el ultimo numero ya que al principio vale 0
                 if (turno == 1) {
                     lastNumber = getNumber(firstNumber);
                 } else {
@@ -237,7 +242,7 @@ public class PasaLaCalculadora {
                 if (turno > 1) {
                     total = total + lastNumber;
                 }
-
+                //Ultimo menu donde mostramos quien ha gando
                 if (maxNumber == total) {
                     if (turno % 2 == 0) {
                         System.out.println("El jugador " + name2 + " ha ganado, blackjack!");
