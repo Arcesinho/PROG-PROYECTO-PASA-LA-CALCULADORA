@@ -35,6 +35,14 @@ public class PasaLaCalculadora {
 
         return sc.nextLine();
     }
+    // jugador 3
+    public static String getUserName3(){
+
+        System.out.println("Introduce tu nombre, jugador 3: ");
+        Scanner sc = new Scanner(System.in);
+
+        return sc.nextLine();
+    }
 
     //Funcion que piide el numero maximo y comprueba si es -1 o no esta en rango
 
@@ -182,11 +190,14 @@ public class PasaLaCalculadora {
             opcion = getUserInput();
 
             if (opcion == 2){
+                System.out.println("Hasta otra!!");
                 break;
             }
 
             String name1 = getUserName1();
             String name2 = getUserName2();
+            // jugador 3
+            String name3 = getUserName3();
             int maxNumber = getMaxNumber();
             int firstNumber = getFirstNumber();
 
@@ -197,23 +208,21 @@ public class PasaLaCalculadora {
 
             while (total<= maxNumber){
 
-                if (turno%2 == 0){
+
 
                     System.out.println("Turno: "+turno);
                     System.out.println("Objetivo del juego: "+maxNumber);
                     System.out.println("Ultimo numero introducido: "+lastNumber);
-                    System.out.println("Turno del jugador: "+name2);
+                    // 3 jugadores
+                    if (turno % 3 == 1)
+                        System.out.println("Turno del jugador: " + name1);
+                    else if (turno % 3 == 2)
+                        System.out.println("Turno del jugador: " + name2);
+                    else
+                        System.out.println("Turno del jugador: " + name3);
+
                     System.out.println("Total: "+total);
 
-                }else{
-
-                    System.out.println("Turno: "+turno);
-                    System.out.println("Objetivo del juego: "+maxNumber);
-                    System.out.println("Ultimo numero introducido: "+lastNumber);
-                    System.out.println("Turno del jugador: "+name1);
-                    System.out.println("Total: "+total);
-
-                }
 
                 if (turno == 1){
                     lastNumber = getNumber(firstNumber);
@@ -225,13 +234,46 @@ public class PasaLaCalculadora {
                 if (turno > 1){
                     total = total + lastNumber ;
                 }
+                if (maxNumber == total){
+                    if (turno % 3 == 1) {
+                        System.out.println("El jugador " + name1 + " ha ganado, blackjack!");
+                        System.out.println("llegó a "+ total);
+                        break;
+                    } else if (turno % 3 == 2) {
+                        System.out.println("El jugador " + name2 + " ha ganado, blackjack!");
+                        System.out.println("llegó a "+ total);
+                        break;
+                    } else {
+                        System.out.println("El jugador " + name3 + " ha ganado, blackjack!");
+                        System.out.println("llegó a "+ total);
+                        break;
+                    }
+
+                }
+                if (maxNumber< total) {
+                    if (turno % 3 == 0) {
+                        System.out.println("El jugador " + name3 + " ha ganado la partida!!");
+                        System.out.println("Con " + total);
+                        break;
+                    } else if (turno % 3 == 2) {
+                        System.out.println("El jugador " + name1 + " ha ganado la partida!!");
+                        System.out.println("Con" + total);
+                        break;
+
+                    } else {
+                        System.out.println("El jugador " + name2 + " ha ganado la partida!!");
+                        System.out.println("Con" + total);
+                        break;
+                    }
+
+
+                }
+
+
             }
-            if (turno%2 == 0){
-                System.out.println("El jugador " + name1 + " ha ganado la partida\n");
-            }else{
-                System.out.println("El jugador " + name2 + " ha ganado la partida\n");
-            }
+
 
         }
     }
 }
+// no para al llegar al numero maximo
