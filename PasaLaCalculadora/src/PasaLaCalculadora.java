@@ -121,13 +121,25 @@ public class PasaLaCalculadora {
     }
     /**
      *
-     * @return devuelve el numero que el usuario ha introducido
+     * @return devuelve el numero que el usuario ha introducido por primera vez
      */
     public static int getFirstNumber(){
 
         System.out.println("Introduce un numero entero del 1 al 9 (incluidos): ");
         Scanner sc = new Scanner(System.in);
         return sc.nextInt();
+    }
+    /**
+     *
+     * @param firstNumber
+     * @return comprueba si el primer numero esta en rango
+     */
+    public static int checkFirstNumber(int firstNumber){
+        while (firstNumber <1 || firstNumber >9){
+            System.out.println("El numero está fuera de rango.");
+            firstNumber = getFirstNumber();
+        }
+        return firstNumber;
     }
     /**
      * Enum para los posibles casos al introducir un numero
@@ -172,7 +184,7 @@ public class PasaLaCalculadora {
 
         while (true){
 
-            System.out.println("Introduce un numero del 1 al 9 (incluidos): ");
+            System.out.println("Introduce un numero entero del 1 al 9 (incluidos): ");
             Scanner sc = new Scanner(System.in);
             int numeroIntroducido  = sc.nextInt();
 
@@ -198,21 +210,22 @@ public class PasaLaCalculadora {
     }
     public static void main(String[] args) {
 
-        int opcion = -1;
+        int opcion = getUserInput();
+        String name1 = getUserName1();
+        String name2 = getUserName2();
 
         while (opcion != 2) {
 
-            opcion = getUserInput();
             if (opcion == 2) {
                 System.out.println("Hasta otra!!");
                 break;
             }
-            //Pedimos al usuario los nombres, el numero maximo, y el primer numero
-            String name1 = getUserName1();
-            String name2 = getUserName2();
+            //Pedimos al usuario el numero maximo, y el primer numero
             int maxNumber = getMaxNumber();
             System.out.println("El numero maximo es: "+maxNumber);
-            int firstNumber = getFirstNumber();
+            //Checkeamos si el primer numero está en rango
+            int firstNumberBeforeCheck = getFirstNumber();
+            int firstNumber = checkFirstNumber(firstNumberBeforeCheck);
             //Iniciamos lastNumber a 0 total le sumamos el primer numero y el turno inicial a 1
             int lastNumber = 0;
             int total = firstNumber;
@@ -266,6 +279,7 @@ public class PasaLaCalculadora {
                     }
                 }
             }
+            opcion = getUserInput();
         }
     }
 }
