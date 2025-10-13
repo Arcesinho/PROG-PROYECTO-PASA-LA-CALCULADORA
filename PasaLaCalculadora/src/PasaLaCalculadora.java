@@ -18,6 +18,18 @@ public class PasaLaCalculadora {
         }return opcion;
 
     }
+
+    /**
+     *
+     * @return devuelve el num de jugadores
+     */
+
+    public static int getPlyerNumbers(){
+        System.out.println("Introduce el numero de jugadores, 2 o 3?");
+        Scanner sc = new Scanner(System.in);
+        int jugadores =sc.nextInt();
+        return jugadores;
+    }
     /**
      *
      * @return devuelve el nombre del jugador 1
@@ -211,8 +223,22 @@ public class PasaLaCalculadora {
     public static void main(String[] args) {
 
         int opcion = getUserInput();
-        String name1 = getUserName1();
-        String name2 = getUserName2();
+        int players = getPlyerNumbers();
+
+        String name1;
+        String name2;
+        String name3 = "";
+
+        if (players == 2 ) {
+            name1 = getUserName1();
+            name2= getUserName2();
+        }else{
+             name1 = getUserName1();
+             name2 = getUserName2();
+             name3 = getUserName3();
+        }
+
+
 
         while (opcion != 2) {
 
@@ -231,55 +257,121 @@ public class PasaLaCalculadora {
             int total = firstNumber;
             int turno = 1;
             //Este bucle solo terminará cuando el total sea mayor al numero maximo
-            while (total <= maxNumber) {
-                //Aqui mostraremos toda la información necesaria por pantalla
-                System.out.println("Turno: " + turno);
-                System.out.println("Objetivo del juego: " + maxNumber);
-                System.out.println("Ultimo numero introducido: " + lastNumber);
-                //Para saber de quien es el turno utilizamos el modulo, par jugador 2 impar jugador 1
-                if (turno % 2 == 0) {
-                    System.out.println("Turno del jugador: " + name2);
-                }else {
-                    System.out.println("Turno del jugador: " + name1);
-                }
-                System.out.println("Total: " + total);
-                //Para el primer turno el numero que comprobamos es el almacenado en firstNumber
-                //luego se usa el ultimo numero ya que al principio vale 0
-                if (turno == 1) {
-                    lastNumber = getNumber(firstNumber);
-                } else {
-                    lastNumber = getNumber(lastNumber);
-                }
+            //Opción de dos jugadores
+            if(players == 2) {
+                while (total <= maxNumber) {
+                    //Aqui mostraremos toda la información necesaria por pantalla
+                    System.out.println("Turno: " + turno);
+                    System.out.println("Objetivo del juego: " + maxNumber);
+                    System.out.println("Ultimo numero introducido: " + lastNumber);
+                    //Para saber de quien es el turno utilizamos el modulo, par jugador 2 impar jugador 1
+                    if (turno % 2 == 0) {
+                        System.out.println("Turno del jugador: " + name2);
+                    } else {
+                        System.out.println("Turno del jugador: " + name1);
+                    }
+                    System.out.println("Total: " + total);
+                    //Para el primer turno el numero que comprobamos es el almacenado en firstNumber
+                    //luego se usa el ultimo numero ya que al principio vale 0
+                    if (turno == 1) {
+                        lastNumber = getNumber(firstNumber);
+                    } else {
+                        lastNumber = getNumber(lastNumber);
+                    }
 
-                turno = turno + 1;
-                if (turno > 1) {
-                    total = total + lastNumber;
-                }
-                //Ultimo menu donde mostramos quien ha gando
-                if (maxNumber == total) {
-                    if (turno % 2 == 0) {
-                        System.out.println("El jugador " + name2 + " ha ganado, blackjack!");
-                        System.out.println("llegó a " + total);
-                        break;
-                    } else {
-                        System.out.println("El jugador " + name1 + " ha ganado, blackjack!");
-                        System.out.println("llegó a " + total);
-                        break;
+                    turno = turno + 1;
+                    if (turno > 1) {
+                        total = total + lastNumber;
+                    }
+                    //Ultimo menu donde mostramos quien ha gando
+                    if (maxNumber == total) {
+                        if (turno % 2 == 0) {
+                            System.out.println("El jugador " + name2 + " ha ganado, blackjack!");
+                            System.out.println("llegó a " + total);
+                            break;
+                        } else {
+                            System.out.println("El jugador " + name1 + " ha ganado, blackjack!");
+                            System.out.println("llegó a " + total);
+                            break;
+                        }
+                    }
+                    if (total > maxNumber) {
+                        if (turno % 2 == 0) {
+                            System.out.println("El jugador " + name1 + " ha ganado la partida!!");
+                            System.out.println("El jugador " + name2 + " se ha pasado\n");
+                            break;
+                        } else {
+                            System.out.println("El jugador " + name2 + " ha ganado la partida!!");
+                            System.out.println("El jugador " + name1 + " se ha pasado\n");
+                            break;
+                        }
                     }
                 }
-                if (total > maxNumber) {
-                    if (turno % 2 == 0) {
-                        System.out.println("El jugador " + name1 + " ha ganado la partida!!");
-                        System.out.println("El jugador " + name2 + " se ha pasado\n");
-                        break;
-                    } else {
-                        System.out.println("El jugador " + name2 + " ha ganado la partida!!");
-                        System.out.println("El jugador " + name1 + " se ha pasado\n");
-                        break;
-                    }
-                }
+                opcion = getUserInput();
             }
-            opcion = getUserInput();
+            // Opción de 3 jugadores
+            if (players == 3){
+                while (total <= maxNumber) {
+                    //Aqui mostraremos toda la información necesaria por pantalla
+                    System.out.println("Turno: " + turno);
+                    System.out.println("Objetivo del juego: " + maxNumber);
+                    System.out.println("Ultimo numero introducido: " + lastNumber);
+                    //Para saber de quien es el turno utilizamos el modulo, par jugador 2 impar jugador 1
+                    if (turno % 3 == 1) {
+                        System.out.println("Turno del jugador: " + name1);
+                    } else if(turno % 3== 2) {
+                        System.out.println("Turno del jugador: " + name2);
+                    }else{
+                        System.out.println("Turno del jugador: " + name3);
+                    }
+                    System.out.println("Total: " + total);
+                    //Para el primer turno el numero que comprobamos es el almacenado en firstNumber
+                    //luego se usa el ultimo numero ya que al principio vale 0
+                    if (turno == 1) {
+                        lastNumber = getNumber(firstNumber);
+                    } else {
+                        lastNumber = getNumber(lastNumber);
+                    }
+
+                    turno = turno + 1;
+                    if (turno > 1) {
+                        total = total + lastNumber;
+                    }
+                    //Ultimo menu donde mostramos quien ha gando
+                    if (maxNumber == total) {
+                        if (turno % 3 == 1) {
+                            System.out.println("El jugador " + name1 + " ha ganado, blackjack!");
+                            System.out.println("llegó a " + total);
+                            break;
+                        } else if(turno % 3== 2) {
+                            System.out.println("El jugador " + name2 + " ha ganado, blackjack!");
+                            System.out.println("llegó a " + total);
+                            break;
+                        }else{
+                            System.out.println("El jugador " + name3 + " ha ganado, blackjack!");
+                            System.out.println("llegó a " + total);
+                        }
+                    }
+                    if (total > maxNumber) {
+                        if (turno % 3 == 2) {
+                            System.out.println("El jugador " + name1 + " ha ganado la partida!!");
+                            System.out.println("El jugador " + name2 + " se ha pasado\n");
+                            break;
+                        } else if (turno % 3 == 0){
+                            System.out.println("El jugador " + name2 + " ha ganado la partida!!");
+                            System.out.println("El jugador " + name3 + " se ha pasado\n");
+                            break;
+                        }else{
+
+                            System.out.println("El jugador " + name3 + " ha ganado la partida!!");
+                            System.out.println("El jugador " + name1 + " se ha pasado\n");
+                            break;
+
+                        }
+                    }
+                }
+                opcion = getUserInput();
+            }
         }
     }
 }
