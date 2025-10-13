@@ -350,6 +350,7 @@ public class PasaLaCalculadora {
                         }else{
                             System.out.println("El jugador " + name3 + " ha ganado, blackjack!");
                             System.out.println("llegó a " + total);
+                            break;
                         }
                     }
                     if (total > maxNumber) {
